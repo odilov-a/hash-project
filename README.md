@@ -7,7 +7,6 @@ A modern, premium cryptography toolkit for developers built with HTML5, CSS3, an
 - **100% Client-Side**: All cryptographic operations happen locally in your browser
 - **Zero Dependencies**: Pure HTML, CSS, and JavaScript (no frameworks)
 - **Professional Design**: Modern glassmorphism UI with smooth animations
-- **Dark Mode**: Built-in light/dark theme support
 - **Responsive**: Works seamlessly on desktop, tablet, and mobile
 - **14+ Crypto Tools**: Complete toolkit for developers
 - **Copy & Download**: Every output can be copied or downloaded
@@ -85,12 +84,10 @@ hash-project/
 │   ├── animations.css        # Animations and transitions
 │   └── dark.css              # Dark mode styles
 ├── js/
-│   ├── app.js                # Main application controller
-│   ├── ui.js                 # UI management and DOM utilities
-│   ├── crypto.js             # Cryptographic operations
-│   ├── storage.js            # LocalStorage management
-│   ├── utils.js              # General utility functions
-│   └── tools.js              # All tool implementations
+│   ├── app.js                # Bootstrap + tool navigation
+│   ├── ui.js                 # View layer: DOM components, toasts, output area
+│   ├── core.js               # Pure logic: crypto, hashing, utils, storage
+│   └── tools.js              # All tool implementations (registry)
 └── README.md                 # This file
 ```
 
@@ -112,18 +109,13 @@ hash-project/
 - **Color Scheme**:
   - Primary: `#5B4DFF` (Purple)
   - Accent: `#00C896` (Teal)
-  - Light theme background: Very light gray
-  - Dark theme background: Deep blue-gray
+  - Background: Very light gray (light theme only)
 
-## 🔍 Keyboard Shortcuts
+## Keyboard Shortcuts
 
 Coming soon in v2.0
 
-## 🌙 Dark Mode
-
-Toggle between light and dark modes using the moon icon (🌙) in the top-right corner. Your preference is saved automatically.
-
-## 💾 Data & Storage
+## Data & Storage
 
 All data is stored locally in your browser's localStorage:
 - **History**: Last 20 operations per tool
@@ -164,10 +156,10 @@ Simply copy all files to your web server. No build step required.
 ## 🔄 Web Crypto API Support
 
 This project uses:
-- **Web Crypto API** for: SHA-256, SHA-384, SHA-512, SHA-1, HMAC, AES-GCM, RSA, UUID v4
-- **CryptoJS** (CDN) for: MD5, SHA-224, SHA3-256, SHA3-512, RIPEMD160
+- **Web Crypto API** for: SHA-256, SHA-384, SHA-512, SHA-1, HMAC, AES-256-GCM (PBKDF2 key derivation), RSA, UUID v4 (`crypto.randomUUID`)
+- **CryptoJS** (CDN) for: MD5, SHA-224, SHA3-256, SHA3-512
 
-All cryptographic algorithms are industry-standard and widely used in production systems.
+MD5/SHA-224/SHA3 require the CryptoJS CDN to be reachable; all Web Crypto algorithms work fully offline. All cryptographic algorithms are industry-standard and widely used in production systems.
 
 ## 🚧 Roadmap
 
