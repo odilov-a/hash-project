@@ -1,1 +1,148 @@
-hello, hash
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional cryptography toolkit for developers. Generate keys, hashes, passwords, and perform cryptographic operations locally in the browser.">
+    <meta name="theme-color" content="#5B4DFF">
+
+    <title>CryptoKit - Professional Cryptography Toolkit</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/dark.css">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23111111' width='100' height='100'/><text x='50' y='70' font-size='40' font-weight='bold' text-anchor='middle' fill='white' font-family='monospace'>C</text></svg>">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-start">
+                <a href="#" class="navbar-logo">
+                    <span class="logo-text">CryptoKit</span>
+                </a>
+            </div>
+
+            <div class="navbar-center">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search tools..." class="search-input">
+                    <span class="search-icon">Search</span>
+                </div>
+            </div>
+
+            <div class="navbar-end">
+                <button id="theme-toggle" class="btn-icon" title="Toggle dark mode">
+                    <span class="theme-icon">Light</span>
+                </button>
+                <a href="https://github.com/odilov-a/hash-project.git" target="_blank" rel="noopener noreferrer" class="btn-icon" title="GitHub">
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Tools</h3>
+                <button id="sidebar-toggle" class="btn-icon-small">
+                    <span>Menu</span>
+                </button>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="tool-category">
+                    <h4 class="category-title">Key Generation</h4>
+                    <nav class="tool-nav">
+                        <button class="tool-btn" data-tool="secret-key">
+                            <span class="tool-name">Secret Key</span>
+                        </button>
+                        <button class="tool-btn" data-tool="password">
+                            <span class="tool-name">Password</span>
+                        </button>
+                        <button class="tool-btn" data-tool="rsa-keys">
+                            <span class="tool-name">RSA Keys</span>
+                        </button>
+                        <button class="tool-btn" data-tool="ecc-keys">
+                            <span class="tool-name">ECC Keys</span>
+                        </button>
+                        <button class="tool-btn" data-tool="uuid">
+                            <span class="tool-name">UUID</span>
+                        </button>
+                    </nav>
+                </div>
+
+                <div class="tool-category">
+                    <h4 class="category-title">Hashing</h4>
+                    <nav class="tool-nav">
+                        <button class="tool-btn" data-tool="hash">
+                            <span class="tool-name">Hash Generator</span>
+                        </button>
+                        <button class="tool-btn" data-tool="hash-detect">
+                            <span class="tool-name">Hash Detector</span>
+                        </button>
+                        <button class="tool-btn" data-tool="hmac">
+                            <span class="tool-name">HMAC</span>
+                        </button>
+                        <button class="tool-btn" data-tool="checksum">
+                            <span class="tool-name">Checksum</span>
+                        </button>
+                    </nav>
+                </div>
+
+                <div class="tool-category">
+                    <h4 class="category-title">Encryption</h4>
+                    <nav class="tool-nav">
+                        <button class="tool-btn" data-tool="aes">
+                            <span class="tool-name">AES Encryption</span>
+                        </button>
+                        <button class="tool-btn" data-tool="jwt">
+                            <span class="tool-name">JWT Tools</span>
+                        </button>
+                    </nav>
+                </div>
+
+                <div class="tool-category">
+                    <h4 class="category-title">Encoding</h4>
+                    <nav class="tool-nav">
+                        <button class="tool-btn" data-tool="base64">
+                            <span class="tool-name">Base64</span>
+                        </button>
+                        <button class="tool-btn" data-tool="encoding">
+                            <span class="tool-name">Encodings</span>
+                        </button>
+                    </nav>
+                </div>
+
+                <div class="tool-category">
+                    <h4 class="category-title">Utilities</h4>
+                    <nav class="tool-nav">
+                        <button class="tool-btn" data-tool="random">
+                            <span class="tool-name">Random Generator</span>
+                        </button>
+                        <button class="tool-btn" data-tool="json">
+                            <span class="tool-name">JSON Formatter</span>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div id="tool-container" class="tool-container">
+                <!-- Tool content dynamically loaded here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/app.js" type="module"></script>
+</body>
+</html>

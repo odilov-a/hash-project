@@ -1,0 +1,340 @@
+/* Dark Mode */
+
+:root[data-theme="dark"] {
+    /* Colors */
+    --primary: #5B4DFF;
+    --primary-dark: #4A3FD1;
+    --primary-light: #7A6DFF;
+    --accent: #00C896;
+    --accent-dark: #00A878;
+    --accent-light: #33E5BA;
+
+    /* Backgrounds */
+    --bg-primary: #0F172A;
+    --bg-secondary: #1E293B;
+    --bg-tertiary: #334155;
+    --border-color: #475569;
+
+    /* Text */
+    --text-primary: #F1F5F9;
+    --text-secondary: #CBD5E1;
+    --text-tertiary: #94A3B8;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.6);
+    --shadow-glow: 0 0 30px rgba(91, 77, 255, 0.25);
+}
+
+/* Dark Mode - Navbar */
+:root[data-theme="dark"] .navbar {
+    background: rgba(30, 41, 59, 0.8);
+    border-bottom-color: #334155;
+}
+
+:root[data-theme="dark"] .navbar-logo {
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .navbar-logo:hover {
+    color: var(--primary-light);
+}
+
+/* Dark Mode - Search */
+:root[data-theme="dark"] .search-input {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .search-input:focus {
+    background: var(--bg-secondary);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(91, 77, 255, 0.2);
+}
+
+:root[data-theme="dark"] .search-icon {
+    color: var(--text-tertiary);
+}
+
+/* Dark Mode - Sidebar */
+:root[data-theme="dark"] .sidebar {
+    background: var(--bg-secondary);
+    border-right-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .sidebar-header {
+    border-bottom-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .tool-btn:hover {
+    background: rgba(91, 77, 255, 0.1);
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .tool-btn.active {
+    background: rgba(91, 77, 255, 0.2);
+    color: var(--primary-light);
+}
+
+/* Dark Mode - Cards */
+:root[data-theme="dark"] .card {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .card:hover {
+    border-color: rgba(91, 77, 255, 0.3);
+}
+
+/* Dark Mode - Forms */
+:root[data-theme="dark"] .form-input,
+:root[data-theme="dark"] .form-textarea,
+:root[data-theme="dark"] .form-select {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .form-input:focus,
+:root[data-theme="dark"] .form-textarea:focus,
+:root[data-theme="dark"] .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(91, 77, 255, 0.2);
+    background: var(--bg-secondary);
+}
+
+:root[data-theme="dark"] .form-label {
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .form-label-helper {
+    color: var(--text-tertiary);
+}
+
+/* Dark Mode - Buttons */
+:root[data-theme="dark"] .btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .btn-secondary:hover {
+    background: rgba(91, 77, 255, 0.1);
+    border-color: var(--primary);
+}
+
+:root[data-theme="dark"] .btn-icon:hover {
+    background: var(--bg-tertiary);
+}
+
+:root[data-theme="dark"] .btn-icon-small:hover {
+    background: var(--bg-tertiary);
+}
+
+/* Dark Mode - Output Area */
+:root[data-theme="dark"] .output-area,
+:root[data-theme="dark"] .output-content {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+/* Dark Mode - Options Group */
+:root[data-theme="dark"] .options-group {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .options-title {
+    color: var(--text-primary);
+}
+
+/* Dark Mode - Toast */
+:root[data-theme="dark"] .toast {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .toast-success {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(0, 200, 150, 0.1) 100%);
+}
+
+:root[data-theme="dark"] .toast-error {
+    border-color: #EF4444;
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(239, 68, 68, 0.1) 100%);
+}
+
+/* Dark Mode - Algorithm Selector */
+:root[data-theme="dark"] .algo-btn {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .algo-btn:hover {
+    border-color: var(--primary);
+    background: rgba(91, 77, 255, 0.15);
+}
+
+:root[data-theme="dark"] .algo-btn.active {
+    border-color: var(--primary);
+    background: rgba(91, 77, 255, 0.2);
+    color: var(--primary-light);
+}
+
+/* Dark Mode - Key Display */
+:root[data-theme="dark"] .key-display {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+/* Dark Mode - Hash Items */
+:root[data-theme="dark"] .hash-item {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .hash-name {
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .hash-value {
+    color: var(--text-secondary);
+}
+
+/* Dark Mode - Dropzone */
+:root[data-theme="dark"] .dropzone {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .dropzone:hover {
+    border-color: var(--primary);
+    background: rgba(91, 77, 255, 0.1);
+}
+
+:root[data-theme="dark"] .dropzone.dragover {
+    border-color: var(--primary);
+    background: rgba(91, 77, 255, 0.15);
+}
+
+:root[data-theme="dark"] .dropzone-text {
+    color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .dropzone-hint {
+    color: var(--text-tertiary);
+}
+
+/* Dark Mode - Progress Bar */
+:root[data-theme="dark"] .progress {
+    background: var(--border-color);
+}
+
+/* Dark Mode - Info/Warning Box */
+:root[data-theme="dark"] .info-box {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+:root[data-theme="dark"] .info-text {
+    color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .warning-box {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+:root[data-theme="dark"] .warning-text {
+    color: var(--text-secondary);
+}
+
+/* Dark Mode - Tab */
+:root[data-theme="dark"] .tabs {
+    border-bottom-color: var(--border-color);
+}
+
+:root[data-theme="dark"] .tab-btn {
+    color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .tab-btn:hover {
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .tab-btn.active {
+    color: var(--primary-light);
+    border-bottom-color: var(--primary);
+}
+
+/* Dark Mode - Strength Meter */
+:root[data-theme="dark"] .strength-bar {
+    background: var(--border-color);
+}
+
+/* Dark Mode - Skeleton */
+:root[data-theme="dark"] .skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--bg-tertiary) 0%,
+        var(--bg-secondary) 50%,
+        var(--bg-tertiary) 100%
+    );
+}
+
+/* Dark Mode - Export Buttons */
+:root[data-theme="dark"] .export-btn {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .export-btn:hover {
+    background: rgba(91, 77, 255, 0.1);
+    border-color: var(--primary);
+    color: var(--primary-light);
+}
+
+/* Dark Mode - Strength Indicator */
+:root[data-theme="dark"] .strength-indicator {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+}
+
+/* Dark Mode - Slider */
+:root[data-theme="dark"] .slider {
+    background: var(--border-color);
+}
+
+/* Code Block in Dark Mode */
+:root[data-theme="dark"] .code-block {
+    background: #0F172A;
+    color: #E5E7EB;
+    border: 1px solid var(--border-color);
+}
+
+/* Smooth Transition for Theme */
+body {
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+:root[data-theme="dark"] body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Theme Icon Animation */
+.theme-icon {
+    display: inline-block;
+    transition: transform var(--transition-normal);
+}
+
+:root[data-theme="dark"] .theme-icon {
+    transform: rotate(180deg);
+}
