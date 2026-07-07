@@ -11,7 +11,16 @@ class CryptoKit {
   init() {
     ui.init();
     this.setupToolNavigation();
+    this.setupSidebarPersistence();
     this.loadTool(storage.getSetting("lastTool", "secret-key"));
+  }
+
+  setupSidebarPersistence() {
+    ui.setSidebarCollapsed(storage.getSetting("sidebarCollapsed", false));
+    document.getElementById("nav-sidebar-toggle")?.addEventListener("click", () => {
+      const collapsed = document.querySelector(".app-container")?.classList.contains("sidebar-collapsed");
+      storage.setSetting("sidebarCollapsed", !!collapsed);
+    });
   }
 
   setupToolNavigation() {

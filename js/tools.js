@@ -5,6 +5,7 @@
 
 import { ui } from "./ui.js";
 import { crypto, storage, utils } from "./core.js";
+import { snippets } from "./snippets.js";
 
 // Run an async tool action with consistent loading + error handling,
 // so individual tools stay focused on their own logic (DRY).
@@ -22,8 +23,6 @@ const withLoading = async (message, action) => {
 
 export const tools = {
   "secret-key": {
-    name: "Secret Key Generator",
-    icon: "",
     render() {
       return ui.createCard(
         "Secret Key Generator",
@@ -60,8 +59,6 @@ export const tools = {
   },
 
   password: {
-    name: "Password Generator",
-    icon: "",
     render() {
       return ui.createCard(
         "Password Generator",
@@ -114,8 +111,6 @@ export const tools = {
   },
 
   hash: {
-    name: "Hash Generator",
-    icon: "",
     render() {
       return ui.createCard(
         "Hash Generator",
@@ -137,11 +132,16 @@ export const tools = {
             Generate Hash
           </button>
           ${ui.createOutput("hash-output", "Hash Output")}
+          ${ui.createCodePanel("hash-code-panel")}
         `,
       );
     },
     setup() {
-      ui.setupAlgorithmButtons("hash-algo-selector");
+      const showSnippet = (algo) => ui.setCodePanel("hash-code-panel", snippets.hash[algo]);
+      ui.setupAlgorithmButtons("hash-algo-selector", showSnippet);
+      ui.setupCodeTabs("hash-code-panel");
+      showSnippet("SHA256");
+
       const input = document.getElementById("hash-input");
 
       const generate = () => {
@@ -163,8 +163,6 @@ export const tools = {
   },
 
   "hash-detect": {
-    name: "Hash Detector",
-    icon: "",
     render() {
       return ui.createCard(
         "Hash Detector",
@@ -203,8 +201,6 @@ export const tools = {
   },
 
   aes: {
-    name: "AES Encryption",
-    icon: "",
     render() {
       return ui.createCard(
         "AES-GCM Encryption",
@@ -223,10 +219,14 @@ export const tools = {
             <button class="btn btn-secondary" id="decrypt-btn">Decrypt</button>
           </div>
           ${ui.createOutput("aes-output", "Result")}
+          ${ui.createCodePanel("aes-code-panel")}
         `,
       );
     },
     setup() {
+      ui.setCodePanel("aes-code-panel", snippets.aes._);
+      ui.setupCodeTabs("aes-code-panel");
+
       const inputField = document.getElementById("aes-input");
       const passwordField = document.getElementById("aes-password");
 
@@ -252,8 +252,6 @@ export const tools = {
   },
 
   uuid: {
-    name: "UUID Generator",
-    icon: "",
     render() {
       return ui.createCard(
         "UUID Generator",
@@ -281,8 +279,6 @@ export const tools = {
   },
 
   jwt: {
-    name: "JWT Tools",
-    icon: "",
     render() {
       return ui.createCard(
         "JWT Tools",
@@ -326,8 +322,6 @@ export const tools = {
   },
 
   base64: {
-    name: "Base64 Encoding",
-    icon: "",
     render() {
       return ui.createCard(
         "Base64 Encoder/Decoder",
@@ -342,10 +336,14 @@ export const tools = {
             <button class="btn btn-secondary" id="decode-base64">Decode</button>
           </div>
           ${ui.createOutput("base64-output", "Output")}
+          ${ui.createCodePanel("base64-code-panel")}
         `,
       );
     },
     setup() {
+      ui.setCodePanel("base64-code-panel", snippets.base64._);
+      ui.setupCodeTabs("base64-code-panel");
+
       const input = document.getElementById("base64-input");
       const run = (verb, action) => {
         try {
@@ -365,8 +363,6 @@ export const tools = {
   },
 
   hmac: {
-    name: "HMAC",
-    icon: "",
     render() {
       return ui.createCard(
         "HMAC Generator",
@@ -388,11 +384,16 @@ export const tools = {
             Generate HMAC
           </button>
           ${ui.createOutput("hmac-output", "HMAC")}
+          ${ui.createCodePanel("hmac-code-panel")}
         `,
       );
     },
     setup() {
-      ui.setupAlgorithmButtons("hmac-algo-selector");
+      const showSnippet = (algo) => ui.setCodePanel("hmac-code-panel", snippets.hmac[algo]);
+      ui.setupAlgorithmButtons("hmac-algo-selector", showSnippet);
+      ui.setupCodeTabs("hmac-code-panel");
+      showSnippet("SHA256");
+
       document.getElementById("generate-hmac")?.addEventListener("click", () => {
         const message = document.getElementById("hmac-input").value;
         const key = document.getElementById("hmac-key").value;
@@ -410,8 +411,6 @@ export const tools = {
   },
 
   encoding: {
-    name: "Encoding Tools",
-    icon: "",
     render() {
       return ui.createCard(
         "Encoding Tools",
@@ -430,11 +429,16 @@ export const tools = {
             <button class="btn btn-secondary" id="decode-btn">Decode</button>
           </div>
           ${ui.createOutput("encoding-output", "Output")}
+          ${ui.createCodePanel("encoding-code-panel")}
         `,
       );
     },
     setup() {
-      ui.setupAlgorithmButtons("encoding-type-selector");
+      const showSnippet = (type) => ui.setCodePanel("encoding-code-panel", snippets.encoding[type]);
+      ui.setupAlgorithmButtons("encoding-type-selector", showSnippet);
+      ui.setupCodeTabs("encoding-code-panel");
+      showSnippet("Hex");
+
       const input = document.getElementById("encoding-input");
 
       const CODERS = {
@@ -459,8 +463,6 @@ export const tools = {
   },
 
   random: {
-    name: "Random Generator",
-    icon: "",
     render() {
       return ui.createCard(
         "Random Generator",
@@ -486,8 +488,6 @@ export const tools = {
   },
 
   json: {
-    name: "JSON Formatter",
-    icon: "",
     render() {
       return ui.createCard(
         "JSON Formatter",
@@ -519,8 +519,6 @@ export const tools = {
   },
 
   checksum: {
-    name: "File Checksum",
-    icon: "",
     render() {
       return ui.createCard(
         "File Checksum",
@@ -583,8 +581,6 @@ export const tools = {
   },
 
   "rsa-keys": {
-    name: "RSA Key Generator",
-    icon: "",
     render() {
       return ui.createCard(
         "RSA Key Generator",
@@ -609,10 +605,13 @@ export const tools = {
               <button class="btn btn-secondary" id="copy-private" style="margin-top: var(--spacing-md);">Copy Private Key</button>
             </div>
           </div>
+          ${ui.createCodePanel("rsa-code-panel")}
         `,
       );
     },
     setup() {
+      ui.setCodePanel("rsa-code-panel", snippets["rsa-keys"]._);
+      ui.setupCodeTabs("rsa-code-panel");
       ui.setupAlgorithmButtons("rsa-size-selector");
       document.getElementById("generate-rsa")?.addEventListener("click", () => {
         const size = parseInt(ui.getActiveAlgorithm("rsa-size-selector"), 10);
@@ -638,32 +637,6 @@ export const tools = {
     },
   },
 
-  "ecc-keys": {
-    name: "ECC Key Generator",
-    icon: "",
-    render() {
-      return ui.createCard(
-        "ECC Key Generator",
-        "",
-        `
-          <div class="options-group">
-            <div class="options-title">Curve</div>
-            ${ui.createAlgorithmButtons("ecc-curve-selector", ["P256", "P384", "P521", "Ed25519"], "P256")}
-          </div>
-          <button class="btn btn-primary w-full" id="generate-ecc" style="margin-bottom: var(--spacing-lg);">
-            Generate ECC Key Pair
-          </button>
-          ${ui.createInfoBox("ECC keys are not yet supported in this version. Use RSA keys for now.")}
-        `,
-      );
-    },
-    setup() {
-      ui.setupAlgorithmButtons("ecc-curve-selector");
-      document.getElementById("generate-ecc")?.addEventListener("click", () => {
-        ui.showToast("ECC key generation coming soon!", "error");
-      });
-    },
-  },
 };
 
 export default tools;

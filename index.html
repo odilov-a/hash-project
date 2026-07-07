@@ -3,36 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Professional cryptography toolkit for developers. Generate keys, hashes, passwords, and perform cryptographic operations locally in the browser.">
-    <meta name="theme-color" content="#5B4DFF">
+    <meta name="description" content="Hash — a client-side crypto workbench. Generate keys, hashes, and passwords, and see the exact JS behind every algorithm.">
+    <meta name="theme-color" content="#201D16">
 
-    <title>CryptoKit - Professional Cryptography Toolkit</title>
+    <title>Hash — Crypto Workbench</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="vendor/bootstrap-icons/bootstrap-icons.css">
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/animations.css">
 
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23111111' width='100' height='100'/><text x='50' y='70' font-size='40' font-weight='bold' text-anchor='middle' fill='white' font-family='monospace'>C</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23201D16' width='100' height='100'/><circle cx='50' cy='50' r='30' fill='%239C2B2B'/><text x='50' y='60' font-size='34' font-weight='bold' text-anchor='middle' fill='%23EDE6D4' font-family='monospace'>H</text></svg>">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-container">
             <div class="navbar-start">
+                <button id="nav-sidebar-toggle" class="btn-icon" title="Toggle sidebar">
+                    <i class="bi bi-list"></i>
+                </button>
                 <a href="#" class="navbar-logo">
-                    <span class="logo-text">CryptoKit</span>
+                    <span class="logo-text">Hash</span>
                 </a>
-            </div>
-
-            <div class="navbar-center">
-                <div class="search-box">
-                    <input type="text" id="search-input" placeholder="Search tools..." class="search-input">
-                    <span class="search-icon">Search</span>
-                </div>
             </div>
 
             <div class="navbar-end">
                 <a href="https://github.com/odilov-a/hash-project.git" target="_blank" rel="noopener noreferrer" class="btn-icon" title="GitHub">
+                    <i class="bi bi-github"></i>
                     <span>GitHub</span>
                 </a>
             </div>
@@ -43,83 +44,98 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h3>Tools</h3>
-                <button id="sidebar-toggle" class="btn-icon-small">
-                    <span>Menu</span>
-                </button>
+                <h3><i class="bi bi-tools"></i> Tools</h3>
+            </div>
+
+            <div class="sidebar-search">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" id="search-input" class="form-control" placeholder="Search tools...">
+                </div>
             </div>
 
             <div class="sidebar-content">
                 <div class="tool-category">
-                    <h4 class="category-title">Key Generation</h4>
+                    <h4 class="category-title"><i class="bi bi-key-fill"></i> Key Generation</h4>
                     <nav class="tool-nav">
                         <button class="tool-btn" data-tool="secret-key">
+                            <i class="bi bi-shield-lock"></i>
                             <span class="tool-name">Secret Key</span>
                         </button>
                         <button class="tool-btn" data-tool="password">
+                            <i class="bi bi-key"></i>
                             <span class="tool-name">Password</span>
                         </button>
                         <button class="tool-btn" data-tool="rsa-keys">
+                            <i class="bi bi-file-earmark-lock2"></i>
                             <span class="tool-name">RSA Keys</span>
                         </button>
-                        <button class="tool-btn" data-tool="ecc-keys">
-                            <span class="tool-name">ECC Keys</span>
-                        </button>
                         <button class="tool-btn" data-tool="uuid">
+                            <i class="bi bi-fingerprint"></i>
                             <span class="tool-name">UUID</span>
                         </button>
                     </nav>
                 </div>
 
                 <div class="tool-category">
-                    <h4 class="category-title">Hashing</h4>
+                    <h4 class="category-title"><i class="bi bi-hash"></i> Hashing</h4>
                     <nav class="tool-nav">
                         <button class="tool-btn" data-tool="hash">
+                            <i class="bi bi-hash"></i>
                             <span class="tool-name">Hash Generator</span>
                         </button>
                         <button class="tool-btn" data-tool="hash-detect">
+                            <i class="bi bi-search"></i>
                             <span class="tool-name">Hash Detector</span>
                         </button>
                         <button class="tool-btn" data-tool="hmac">
+                            <i class="bi bi-shield-check"></i>
                             <span class="tool-name">HMAC</span>
                         </button>
                         <button class="tool-btn" data-tool="checksum">
+                            <i class="bi bi-check2-square"></i>
                             <span class="tool-name">Checksum</span>
                         </button>
                     </nav>
                 </div>
 
                 <div class="tool-category">
-                    <h4 class="category-title">Encryption</h4>
+                    <h4 class="category-title"><i class="bi bi-lock-fill"></i> Encryption</h4>
                     <nav class="tool-nav">
                         <button class="tool-btn" data-tool="aes">
+                            <i class="bi bi-lock"></i>
                             <span class="tool-name">AES Encryption</span>
                         </button>
                         <button class="tool-btn" data-tool="jwt">
+                            <i class="bi bi-braces-asterisk"></i>
                             <span class="tool-name">JWT Tools</span>
                         </button>
                     </nav>
                 </div>
 
                 <div class="tool-category">
-                    <h4 class="category-title">Encoding</h4>
+                    <h4 class="category-title"><i class="bi bi-code-slash"></i> Encoding</h4>
                     <nav class="tool-nav">
                         <button class="tool-btn" data-tool="base64">
+                            <i class="bi bi-file-binary"></i>
                             <span class="tool-name">Base64</span>
                         </button>
                         <button class="tool-btn" data-tool="encoding">
+                            <i class="bi bi-textarea-t"></i>
                             <span class="tool-name">Encodings</span>
                         </button>
                     </nav>
                 </div>
 
                 <div class="tool-category">
-                    <h4 class="category-title">Utilities</h4>
+                    <h4 class="category-title"><i class="bi bi-gear-fill"></i> Utilities</h4>
                     <nav class="tool-nav">
                         <button class="tool-btn" data-tool="random">
+                            <i class="bi bi-dice-5"></i>
                             <span class="tool-name">Random Generator</span>
                         </button>
                         <button class="tool-btn" data-tool="json">
+                            <i class="bi bi-filetype-json"></i>
                             <span class="tool-name">JSON Formatter</span>
                         </button>
                     </nav>

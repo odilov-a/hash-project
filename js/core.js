@@ -58,16 +58,6 @@ export const utils = {
     return `${parseFloat(value.toFixed(decimals))} ${sizes[i]}`;
   },
 
-  calculateEntropy(password) {
-    let charsetSize = 0;
-    if (/[a-z]/.test(password)) charsetSize += 26;
-    if (/[A-Z]/.test(password)) charsetSize += 26;
-    if (/[0-9]/.test(password)) charsetSize += 10;
-    if (/[^a-zA-Z0-9]/.test(password)) charsetSize += 32;
-    if (!charsetSize) return 0;
-    return Math.round(password.length * Math.log2(charsetSize));
-  },
-
   getPasswordStrength(password) {
     if (!password || password.length < 8) return { level: "weak", score: 0 };
     if (password.length < 12) return { level: "fair", score: 1 };

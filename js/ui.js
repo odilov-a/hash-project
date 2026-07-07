@@ -1,8 +1,3 @@
-// ============================================================
-// ui.js — view layer: theme/sidebar/search, DOM notifications,
-// HTML component factories, and output-area handlers.
-// ============================================================
-
 export const ui = {
   init() {
     this.setupSearch();
@@ -22,10 +17,17 @@ export const ui = {
   },
 
   setupSidebar() {
-    const toggle = document.getElementById("sidebar-toggle");
+    const toggle = document.getElementById("nav-sidebar-toggle");
     const sidebar = document.querySelector(".sidebar");
+    const appContainer = document.querySelector(".app-container");
 
-    toggle?.addEventListener("click", () => sidebar?.classList.toggle("open"));
+    // Desktop: hides the sidebar column entirely (.sidebar-collapsed).
+    // Mobile: slides the sidebar drawer in/out (.open). Toggled together —
+    // each only affects its own breakpoint, so they never conflict.
+    toggle?.addEventListener("click", () => {
+      appContainer?.classList.toggle("sidebar-collapsed");
+      sidebar?.classList.toggle("open");
+    });
 
     document.querySelectorAll(".tool-btn").forEach((btn) => {
       btn.addEventListener("click", () => sidebar?.classList.remove("open"));
@@ -36,6 +38,10 @@ export const ui = {
         sidebar?.classList.remove("open");
       }
     });
+  },
+
+  setSidebarCollapsed(collapsed) {
+    document.querySelector(".app-container")?.classList.toggle("sidebar-collapsed", collapsed);
   },
 
   setActiveTool(toolName) {
@@ -257,12 +263,42 @@ export const ui = {
     });
   },
 
-  createInfoBox(message) {
+  // ---------- Code viewer (per-tool "how this works" panel) ----------
+  createCodePanel(id) {
     return `
-      <div class="info-box">
-        <p class="info-text">${message}</p>
+      <div class="code-panel" id="${id}">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="real">Runs in this app</button>
+          <button class="tab-btn" data-tab="explain">How it works</button>
+        </div>
+        <div class="tab-content active" data-pane="real"><pre class="code-block"></pre></div>
+        <div class="tab-content" data-pane="explain"><pre class="code-block"></pre></div>
+        <p class="code-panel-note"></p>
       </div>
     `;
+  },
+
+  setCodePanel(id, { real, explain, note = "" }) {
+    const panel = document.getElementById(id);
+    if (!panel) return;
+    panel.querySelector('[data-pane="real"] .code-block').textContent = real;
+    panel.querySelector('[data-pane="explain"] .code-block').textContent = explain;
+    panel.querySelector(".code-panel-note").textContent = note;
+  },
+
+  setupCodeTabs(id) {
+    const panel = document.getElementById(id);
+    if (!panel) return;
+    const tabs = panel.querySelectorAll(".tab-btn");
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        panel.querySelectorAll(".tab-content").forEach((pane) => {
+          pane.classList.toggle("active", pane.dataset.pane === tab.dataset.tab);
+        });
+      });
+    });
   },
 
   showLoading(message = "Loading...") {

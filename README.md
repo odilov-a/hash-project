@@ -1,4 +1,4 @@
-# CryptoKit - Professional Cryptography Toolkit
+# Hash - Crypto Workbench
 
 A modern, premium cryptography toolkit for developers built with HTML5, CSS3, and vanilla JavaScript. Generate keys, hashes, passwords, and perform cryptographic operations entirely in your browser—no server needed, no data leaves your computer.
 
@@ -54,7 +54,6 @@ http://localhost:8000
 - **Password Generator**: Create strong passwords with customizable options
 - **UUID Generator**: Generate UUID v4 identifiers
 - **RSA Key Generator**: Generate RSA key pairs (2048, 3072, 4096 bits)
-- **ECC Key Generator**: Generate elliptic curve keys (P256, P384, P521, Ed25519)
 
 ### Hashing
 - **Hash Generator**: Support for SHA-256, SHA-512, SHA-1, MD5, SHA-384, SHA-224, SHA3-256, SHA3-512

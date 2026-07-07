@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-CryptoKit — a 100% client-side cryptography toolkit (key/hash/password generation, AES-GCM, HMAC, JWT decode, encoding). Vanilla HTML5 + CSS3 + ES6 modules. No framework, no bundler, no `package.json`, **no build step**.
+Hash — a 100% client-side cryptography toolkit (key/hash/password generation, AES-GCM, HMAC, JWT decode, encoding). Vanilla HTML5 + CSS3 + ES6 modules. No framework, no bundler, no `package.json`, **no build step**.
 
 ## Running
 
@@ -23,9 +23,9 @@ Entry point is `index.html`, which loads only `js/app.js` (`type="module"`); app
 
 - **app.js** — bootstrap. `CryptoKit` class: on `DOMContentLoaded` wires sidebar `.tool-btn` clicks to `loadTool()` and restores the last tool from storage. `loadTool()` calls `tool.render()` → injects HTML → `tool.setup()` → `ui.setupOutputHandlers()`.
 - **tools.js** — the `tools` registry: object keyed by tool id, each `{ name, icon, render(), setup() }`. `render()` returns an HTML string from `ui.*` factories; `setup()` binds events and calls `crypto`/`storage`. Shared `withLoading(message, action)` wraps every async tool action with loading + try/catch/toast, so tools stay small. Write output via `ui.setOutput(id, value)` rather than repeating DOM writes.
-- **ui.js** — view layer. Search/sidebar chrome, DOM notifications (`showToast`, `copyToClipboard`, `downloadFile`), the output area (`createOutput`/`setOutput`/`setupOutputHandlers`), and component factories (`createCard`, `createSlider`, `createAlgorithmButtons`, `createCheckboxGroup`, `createStrengthMeter`, `createInfoBox`, `showLoading`). No core import.
+- **ui.js** — view layer. Search/sidebar chrome (including sidebar hide/show), DOM notifications (`showToast`, `copyToClipboard`, `downloadFile`), the output area (`createOutput`/`setOutput`/`setupOutputHandlers`), the per-tool code viewer (`createCodePanel`/`setCodePanel`/`setupCodeTabs`), and component factories (`createCard`, `createSlider`, `createAlgorithmButtons`, `createCheckboxGroup`, `createStrengthMeter`, `showLoading`). No core import.
 - **core.js** — pure logic layer, no DOM rendering. Exports three singletons:
-  - `utils` — byte/hex/base64 conversion, `randomBytes` (hex), URL/HTML encode, `formatBytes`, password entropy/strength, `detectHashType`, JSON format/minify, `debounce`.
+  - `utils` — byte/hex/base64 conversion, `randomBytes` (hex), URL/HTML encode, `formatBytes`, password strength, `detectHashType`, JSON format/minify, `debounce`.
   - `crypto` — `hash(algo, data)` and `hmac(algo, data, key)` dispatch through the `HASHERS`/`HMAC_HASHES` maps (keyed by the exact UI label — no fragile string munging); AES-GCM with PBKDF2 key derivation; RSA keygen + PEM export; `generateUUID` (native `crypto.randomUUID`); base64/hex encode/decode. Web Crypto (`subtle`) covers SHA-1/256/384/512, HMAC, AES, RSA, PBKDF2; **CryptoJS** (lazy-loaded once from CDN) covers MD5, SHA-224, SHA3-256/512.
   - `storage` — namespaced localStorage (`cryptokit_` prefix): `save`/`get`, per-tool `saveHistory` (20 entries), and `getSettings`/`getSetting`/`setSetting`.
 
@@ -37,7 +37,7 @@ A tool is live only when **both** exist and the ids match:
 1. A `data-tool="<id>"` button in the `index.html` sidebar.
 2. A `tools['<id>']` entry in `js/tools.js` with `render()` + `setup()`.
 
-If a sidebar button's `data-tool` has no matching registry entry, `loadTool()` shows a "Tool not found" toast (the sidebar lists some ids like `rsa-keys`, `ecc-keys`, `checksum` — verify the registry entry exists before assuming a tool works).
+If a sidebar button's `data-tool` has no matching registry entry, `loadTool()` shows a "Tool not found" toast — verify the registry entry exists before assuming a tool works.
 
 ## Conventions
 
