@@ -1,13 +1,3 @@
-// ============================================================
-// snippets.js — hand-maintained source for the per-tool code
-// viewer (ui.createCodePanel). Two views per algorithm:
-//   real    — the literal code that runs, copied from core.js
-//   explain — a conceptual walkthrough of the algorithm itself
-//   note    — one-line fact (digest size, family, status)
-// Kept separate from core.js so the dispatch maps there stay
-// free of embedded documentation strings.
-// ============================================================
-
 const subtleHashReal = `// core.js
 const subtleHash = async (name, data) => {
   const buffer = await subtle.digest(name, utils.stringToBytes(data));
@@ -17,11 +7,11 @@ const subtleHash = async (name, data) => {
 SHA256: (d) => subtleHash("SHA-256", d)`;
 
 const merkleDamgardExplain = (rounds, note) => `1. Pad the message so its length is a multiple of the block size
-   (append a 1 bit, zero bits, then the original bit-length).
+    (append a 1 bit, zero bits, then the original bit-length).
 2. Split the padded message into fixed-size blocks.
 3. Run each block through ${rounds} of mixing (shifts, rotations,
-   XOR, modular addition) with the previous block's output —
-   this chaining is the "Merkle–Damgård construction".
+    XOR, modular addition) with the previous block's output —
+    this chaining is the "Merkle–Damgård construction".
 4. The final chaining value, formatted as hex, is the digest.
 ${note}`;
 
@@ -229,6 +219,47 @@ escape dance here exists only because JS's own atob/btoa work on
 Latin-1 bytes, not UTF-8 — that wrapper lets multi-byte characters
 round-trip correctly.`,
       note: "RFC 4648 Base64 · reversible encoding, not encryption",
+    },
+  },
+
+  qr: {
+    _: {
+      real: `// core.js — qrcode-generator loaded lazily from CDN
+async generateQRMatrix(text, errorCorrectionLevel = "M") {
+  const qrcodeLib = await loadQRCodeLib();
+  const qr = qrcodeLib(0, errorCorrectionLevel); // typeNumber 0 = auto-size
+  qr.addData(text);
+  qr.make();
+  const size = qr.getModuleCount();
+  const matrix = Array.from({ length: size }, (_, row) =>
+    Array.from({ length: size }, (_, col) => qr.isDark(row, col)),
+  );
+  return { size, matrix };
+}
+
+// ui.js — draws the boolean matrix onto a <canvas>
+renderQRMatrix(canvasId, { size, matrix }, scale = 8) {
+  const ctx = canvas.getContext("2d");
+  for (let row = 0; row < size; row++) {
+    for (let col = 0; col < size; col++) {
+      if (matrix[row][col]) ctx.fillRect(col * scale, row * scale, scale, scale);
+    }
+  }
+}`,
+      explain: `1. Your text is packed into a bitstream and split across 8-bit
+   codewords, using the most compact mode that fits (numeric →
+   alphanumeric → byte).
+2. Reed–Solomon error-correction codewords are appended, so the
+   code still scans even if part of it is dirty, torn, or covered
+   by a logo — the "L/M/Q/H" level controls how much redundancy
+   you trade for data capacity.
+3. Data + EC codewords are placed into a square grid around three
+   fixed finder patterns (the corner squares) following a
+   zig-zag fill rule, then one of 8 mask patterns is applied to
+   avoid patterns that confuse scanners.
+4. Each grid cell becomes a black (dark) or white (light) module —
+   that boolean matrix is what gets painted to the canvas.`,
+      note: "ISO/IEC 18004 QR Code · Reed–Solomon EC · needs qrcode-generator CDN",
     },
   },
 

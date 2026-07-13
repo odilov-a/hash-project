@@ -4,7 +4,6 @@ export const ui = {
     this.setupSidebar();
   },
 
-  // ---------- Chrome: search, sidebar ----------
   setupSearch() {
     const searchInput = document.getElementById("search-input");
     searchInput?.addEventListener("input", (e) => {
@@ -21,9 +20,6 @@ export const ui = {
     const sidebar = document.querySelector(".sidebar");
     const appContainer = document.querySelector(".app-container");
 
-    // Desktop: hides the sidebar column entirely (.sidebar-collapsed).
-    // Mobile: slides the sidebar drawer in/out (.open). Toggled together —
-    // each only affects its own breakpoint, so they never conflict.
     toggle?.addEventListener("click", () => {
       appContainer?.classList.toggle("sidebar-collapsed");
       sidebar?.classList.toggle("open");
@@ -55,13 +51,12 @@ export const ui = {
     if (container) container.innerHTML = html;
   },
 
-  // ---------- Notifications / IO ----------
   showToast(message, type = "success", duration = 3000) {
     const toast = document.createElement("div");
     toast.className = `toast toast-${type} animate-slide-in-right`;
     const text = document.createElement("span");
     text.className = "toast-message";
-    text.textContent = message; // textContent avoids HTML injection
+    text.textContent = message;
     toast.append(text);
 
     document.getElementById("toast-container")?.appendChild(toast);
@@ -92,7 +87,6 @@ export const ui = {
     this.showToast(`Downloaded ${filename}`, "success");
   },
 
-  // ---------- Output area ----------
   createOutput(id = "output", label = "Output") {
     return `
       <div class="output-container">
@@ -109,7 +103,6 @@ export const ui = {
     `;
   },
 
-  // Write a value into an output area (shared by every tool).
   setOutput(id, value) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -149,7 +142,6 @@ export const ui = {
     });
   },
 
-  // ---------- Component factories ----------
   createCard(title, icon, content) {
     return `
       <div class="card">
@@ -263,7 +255,6 @@ export const ui = {
     });
   },
 
-  // ---------- Code viewer (per-tool "how this works" panel) ----------
   createCodePanel(id) {
     return `
       <div class="code-panel" id="${id}">
@@ -299,6 +290,40 @@ export const ui = {
         });
       });
     });
+  },
+
+  createQRCanvas(id) {
+    return `
+      <div class="qr-canvas-wrapper">
+        <canvas id="${id}" class="qr-canvas"></canvas>
+      </div>
+    `;
+  },
+
+  renderQRMatrix(canvasId, { size, matrix }, scale = 8) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    canvas.width = size * scale;
+    canvas.height = size * scale;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#000000";
+    for (let row = 0; row < size; row++) {
+      for (let col = 0; col < size; col++) {
+        if (matrix[row][col]) ctx.fillRect(col * scale, row * scale, scale, scale);
+      }
+    }
+  },
+
+  downloadCanvasAsPNG(canvasId, filename) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = filename;
+    link.click();
+    this.showToast(`Downloaded ${filename}`, "success");
   },
 
   showLoading(message = "Loading...") {

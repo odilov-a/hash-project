@@ -1,222 +1,91 @@
-# Hash - Crypto Workbench
+# Hash — Crypto Workbench
 
-A modern, premium cryptography toolkit for developers built with HTML5, CSS3, and vanilla JavaScript. Generate keys, hashes, passwords, and perform cryptographic operations entirely in your browser—no server needed, no data leaves your computer.
+A 100% client-side cryptography toolkit: generate keys, hashes, and passwords; encrypt with AES-GCM; decode JWTs; encode/decode Base64, hex, URL, and HTML — and see the exact JavaScript behind every algorithm. Vanilla HTML5, CSS3, and ES6 modules. No framework, no bundler, no `package.json`, no build step.
 
-## ✨ Features
+## Features
 
-- **100% Client-Side**: All cryptographic operations happen locally in your browser
-- **Zero Dependencies**: Pure HTML, CSS, and JavaScript (no frameworks)
-- **Professional Design**: Modern glassmorphism UI with smooth animations
-- **Responsive**: Works seamlessly on desktop, tablet, and mobile
-- **14+ Crypto Tools**: Complete toolkit for developers
-- **Copy & Download**: Every output can be copied or downloaded
-- **History & Favorites**: LocalStorage-based history tracking
-- **Toast Notifications**: Real-time feedback on all actions
-- **Keyboard Shortcuts**: Quick access to common functions
-- **PWA Ready**: Works offline once loaded
+- **100% client-side** — every operation runs in your browser; no backend, no data transmission
+- **Code viewer** — most tools show the literal source that ran (`Runs in this app`) alongside a plain-language walkthrough (`How it works`)
+- **History** — last 20 results per tool saved to `localStorage`
+- **Copy / download / clear** on every output
+- **Toast notifications** for success and error feedback
 
-## 🚀 Quick Start
+## Quick Start
 
-### Prerequisites
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- Python 3.x or Node.js with http-server (for local development)
+ES modules require a real HTTP origin — opening `index.html` directly via `file://` will break module loading.
 
-### Installation
-
-1. Clone or download this project:
-```bash
-cd hash-project
-```
-
-2. Start a local HTTP server:
-
-**Using Python:**
 ```bash
 python -m http.server 8000
-# or Python 3
-python3 -m http.server 8000
+# or: npx http-server
 ```
 
-**Using Node.js (http-server):**
-```bash
-npx http-server
-```
+Then open `http://localhost:8000`.
 
-3. Open your browser and navigate to:
-```
-http://localhost:8000
-```
-
-## 🔧 Tools Included
+## Tools
 
 ### Key Generation
-- **Secret Key Generator**: Generate cryptographically secure random keys (8-512 bytes)
-- **Password Generator**: Create strong passwords with customizable options
-- **UUID Generator**: Generate UUID v4 identifiers
-- **RSA Key Generator**: Generate RSA key pairs (2048, 3072, 4096 bits)
+- **Secret Key** — random hex keys (8–512 bytes)
+- **Password** — configurable length and character sets, with a strength meter
+- **RSA Keys** — RSA-OAEP key pairs (2048/3072/4096-bit), exported as PEM
+- **UUID** — UUID v4 via `crypto.randomUUID()`
 
 ### Hashing
-- **Hash Generator**: Support for SHA-256, SHA-512, SHA-1, MD5, SHA-384, SHA-224, SHA3-256, SHA3-512
-- **Hash Detector**: Automatically detect hash type and format
-- **HMAC Generator**: Generate HMAC-SHA256, HMAC-SHA512, HMAC-SHA1
-- **File Checksum**: Compute checksums for uploaded files
+- **Hash Generator** — SHA-1/224/256/384/512, MD5, SHA3-256/512
+- **Hash Detector** — guesses hash type from length/format
+- **HMAC** — HMAC-SHA1/256/512
+- **Checksum** — SHA-256/512 and MD5 for an uploaded file
 
-### Encryption & Encoding
-- **AES-GCM Encryption**: Encrypt and decrypt data with AES-256-GCM
-- **JWT Tools**: Decode and inspect JWT tokens
-- **Base64 Encoder/Decoder**: Encode and decode Base64 strings
-- **Encoding Tools**: Convert between Hex, URL, HTML encodings
-- **Random Generator**: Generate random bytes, numbers, MACs, IPs
+### Encryption
+- **AES Encryption** — AES-256-GCM with PBKDF2 (100,000 rounds) key derivation
+- **JWT Tools** — decode a JWT's header and payload
+
+### Encoding
+- **Base64** — encode/decode
+- **Encodings** — Hex, URL (percent-encoding), HTML entities
 
 ### Utilities
-- **JSON Formatter**: Format and minify JSON
-- **Settings**: Configure theme, language, and notification preferences
+- **Random Generator** — random hex bytes
+- **JSON Formatter** — format/minify JSON
+- **QR Code** — encode text or a URL as a scannable QR code, with adjustable error-correction level and PNG download
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 hash-project/
-├── index.html                 # Main HTML file
+├── index.html                        # Entry point; loads js/app.js as a module
 ├── css/
-│   ├── style.css             # Core styles and layout
-│   ├── components.css        # Component-specific styles
-│   ├── animations.css        # Animations and transitions
-│   └── dark.css              # Dark mode styles
+│   ├── style.css                     # Layout + CSS variables
+│   ├── components.css                # Component-specific styles
+│   └── animations.css                # Transitions and keyframes
 ├── js/
-│   ├── app.js                # Bootstrap + tool navigation
-│   ├── ui.js                 # View layer: DOM components, toasts, output area
-│   ├── core.js               # Pure logic: crypto, hashing, utils, storage
-│   └── tools.js              # All tool implementations (registry)
-└── README.md                 # This file
+│   ├── app.js                        # Bootstrap: wires sidebar navigation, loads the last-used tool
+│   ├── ui.js                         # View layer: DOM components, toasts, output area, code viewer
+│   ├── core.js                       # Pure logic: crypto, hashing, encoding, storage (no DOM)
+│   ├── tools.js                      # Tool registry — one entry per sidebar tool
+│   └── snippets.js                   # Source for the per-tool "how it works" code viewer
+├── vendor/
+│   └── bootstrap-icons/              # Vendored locally (no CDN dependency for icons)
+└── MANIFEST.md
 ```
 
-## 🔐 Security & Privacy
+See [CLAUDE.md](CLAUDE.md) for the full architecture breakdown and conventions for adding a new tool.
 
-- **No Backend**: All code runs in your browser
-- **No Data Transmission**: Data never leaves your computer
-- **No Cookies**: No tracking or persistent identifiers
-- **Open Source**: Code is transparent and auditable
-- **HTTPS Ready**: Easily deployable to any HTTPS host
-- **Local Storage**: Optional history stored in browser storage only
+## Security & Privacy
 
-## 🎨 Design Features
+- **No backend** — all code runs in your browser; nothing you enter is ever transmitted
+- **No cookies or tracking**
+- **History is optional and local** — stored in `localStorage`, never sent anywhere
+- **Web Crypto native**: SHA-1/256/384/512, HMAC, AES-GCM, RSA-OAEP, PBKDF2, and UUID v4 all work fully offline
+- **CDN-dependent algorithms**: MD5, SHA-224, and SHA3-256/512 lazy-load [CryptoJS](https://cdnjs.com/libraries/crypto-js) on first use; the QR Code tool lazy-loads [qrcode-generator](https://cdnjs.com/libraries/qrcode-generator). Both only work when the CDN is reachable — everything else on this page works with no network access at all
 
-- **Glassmorphism**: Modern glass-effect cards and panels
-- **Soft Shadows**: Subtle depth and layering
-- **Smooth Animations**: Polished transitions and effects
-- **Premium Typography**: Clean, readable font hierarchy
-- **Color Scheme**:
-  - Primary: `#5B4DFF` (Purple)
-  - Accent: `#00C896` (Teal)
-  - Background: Very light gray (light theme only)
+## Browser Support
 
-## Keyboard Shortcuts
+Any modern browser with Web Crypto API support: Chrome, Firefox, Safari, Edge (desktop and mobile).
 
-Coming soon in v2.0
+## Deployment
 
-## Data & Storage
+No build step — copy the files to any static host (GitHub Pages, Netlify, Vercel, or a plain web server) as-is.
 
-All data is stored locally in your browser's localStorage:
-- **History**: Last 20 operations per tool
-- **Favorites**: Saved crypto results
-- **Settings**: Theme, language, preferences
+## License
 
-You can export all data or clear it in the Settings panel.
-
-## 🚀 Deployment
-
-### Deploy to Vercel
-```bash
-vercel deploy
-```
-
-### Deploy to Netlify
-```bash
-netlify deploy --prod --dir=.
-```
-
-### Deploy to GitHub Pages
-```bash
-# Push to gh-pages branch
-git subtree push --prefix . origin gh-pages
-```
-
-### Self-Hosted
-Simply copy all files to your web server. No build step required.
-
-## 📊 Browser Support
-
-- Chrome/Chromium 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## 🔄 Web Crypto API Support
-
-This project uses:
-- **Web Crypto API** for: SHA-256, SHA-384, SHA-512, SHA-1, HMAC, AES-256-GCM (PBKDF2 key derivation), RSA, UUID v4 (`crypto.randomUUID`)
-- **CryptoJS** (CDN) for: MD5, SHA-224, SHA3-256, SHA3-512
-
-MD5/SHA-224/SHA3 require the CryptoJS CDN to be reachable; all Web Crypto algorithms work fully offline. All cryptographic algorithms are industry-standard and widely used in production systems.
-
-## 🚧 Roadmap
-
-- [ ] ECC key generation (P256, P384, P521)
-- [ ] Ed25519 key pairs
-- [ ] PBKDF2 key derivation
-- [ ] Argon2 password hashing
-- [ ] PGP/GPG integration
-- [ ] Keyboard shortcuts
-- [ ] CLI version (Node.js)
-- [ ] Batch processing
-- [ ] QR code generation
-- [ ] Internationalization (i18n)
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit issues and pull requests.
-
-## 📝 License
-
-MIT License - feel free to use this project for personal or commercial purposes.
-
-## ⚡ Performance
-
-- **Bundle Size**: ~77 KB JavaScript + ~42 KB CSS
-- **Load Time**: < 2 seconds on modern connections
-- **Operations**: Most crypto operations complete in < 100ms
-- **Memory**: Minimal memory footprint, no memory leaks
-
-## 🐛 Troubleshooting
-
-### App won't load
-- Clear browser cache (Ctrl+Shift+Delete)
-- Disable browser extensions
-- Try a different browser
-- Check browser console for errors (F12)
-
-### Crypto operations fail
-- Check browser console for error messages
-- Ensure you're using a modern browser
-- Try a different tool to test if it's tool-specific
-
-### Dark mode not persisting
-- Enable localStorage in your browser settings
-- Check if your browser is in private/incognito mode
-
-## 📞 Support
-
-For issues, questions, or suggestions, please open an issue on GitHub.
-
-## 🙏 Acknowledgments
-
-Built with care using:
-- Web Crypto API (W3C standard)
-- CryptoJS library
-- Modern CSS3 with glassmorphism
-- Vanilla JavaScript (ES2023)
-
----
-
-**Made with ❤️ by developers, for developers**
+MIT License.

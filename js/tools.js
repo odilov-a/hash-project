@@ -1,14 +1,7 @@
-// ============================================================
-// tools.js — tool registry. Each entry has render() -> HTML and
-// setup() -> event wiring. Keyed by the data-tool id in index.html.
-// ============================================================
-
 import { ui } from "./ui.js";
 import { crypto, storage, utils } from "./core.js";
 import { snippets } from "./snippets.js";
 
-// Run an async tool action with consistent loading + error handling,
-// so individual tools stay focused on their own logic (DRY).
 const withLoading = async (message, action) => {
   ui.showLoading(message);
   try {
@@ -141,9 +134,7 @@ export const tools = {
       ui.setupAlgorithmButtons("hash-algo-selector", showSnippet);
       ui.setupCodeTabs("hash-code-panel");
       showSnippet("SHA256");
-
       const input = document.getElementById("hash-input");
-
       const generate = () => {
         if (!input.value) {
           ui.showToast("Please enter text to hash", "error");
@@ -156,7 +147,6 @@ export const tools = {
           storage.saveHistory("hash", { algo });
         });
       };
-
       document.getElementById("generate-hash")?.addEventListener("click", generate);
       input?.addEventListener("input", utils.debounce(generate, 500));
     },
@@ -484,6 +474,60 @@ export const tools = {
         storage.saveHistory("random", { length });
         ui.showToast("Random bytes generated", "success");
       });
+    },
+  },
+
+  qr: {
+    render() {
+      return ui.createCard(
+        "QR Code Generator",
+        "",
+        `
+          <div class="form-group">
+            <label class="form-label" for="qr-input">Text or URL</label>
+            <textarea id="qr-input" class="form-input form-textarea" placeholder="Enter text, URL, or data to encode..."></textarea>
+          </div>
+          <div class="options-group">
+            <div class="options-title">Error Correction</div>
+            ${ui.createAlgorithmButtons("qr-ec-selector", ["L", "M", "Q", "H"], "M")}
+          </div>
+          <button class="btn btn-primary w-full" id="generate-qr" style="margin-bottom: var(--spacing-lg);">
+            Generate QR Code
+          </button>
+          ${ui.createQRCanvas("qr-canvas")}
+          <button class="btn btn-secondary w-full" id="download-qr" style="margin-top: var(--spacing-md); display: none;">
+            Download PNG
+          </button>
+          ${ui.createCodePanel("qr-code-panel")}
+        `,
+      );
+    },
+    setup() {
+      ui.setCodePanel("qr-code-panel", snippets.qr._);
+      ui.setupCodeTabs("qr-code-panel");
+      ui.setupAlgorithmButtons("qr-ec-selector");
+
+      const input = document.getElementById("qr-input");
+      const downloadBtn = document.getElementById("download-qr");
+
+      document.getElementById("generate-qr")?.addEventListener("click", () => {
+        if (!input.value) {
+          ui.showToast("Please enter text to encode", "error");
+          return;
+        }
+        const ecLevel = ui.getActiveAlgorithm("qr-ec-selector");
+        return withLoading("Generating QR code...", async () => {
+          const result = await crypto.generateQRMatrix(input.value, ecLevel);
+          ui.renderQRMatrix("qr-canvas", result);
+          downloadBtn.style.display = "";
+          storage.saveHistory("qr", { length: input.value.length, ecLevel });
+          ui.showToast("QR code generated", "success");
+        });
+      });
+
+      downloadBtn?.addEventListener("click", () =>
+        ui.downloadCanvasAsPNG("qr-canvas", `qr-${Date.now()}.png`),
+      );
     },
   },
 

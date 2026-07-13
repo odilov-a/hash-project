@@ -1,15 +1,6 @@
-// ============================================================
-// core.js — pure logic layer (no DOM rendering).
-// Byte/encoding helpers, crypto + hashing, localStorage.
-// Exports: utils, crypto, storage.
-// ============================================================
-
-const wc = globalThis.crypto; // Web Crypto API
+const wc = globalThis.crypto;
 const subtle = wc.subtle;
 
-// ---------------------------------------------------------------------------
-// utils — byte conversion, encoding, and small pure helpers
-// ---------------------------------------------------------------------------
 export const utils = {
   stringToBytes: (str) => new TextEncoder().encode(str),
   bytesToString: (bytes) => new TextDecoder().decode(bytes),
@@ -122,6 +113,23 @@ const loadCryptoJS = (() => {
         "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js";
       script.onload = () => resolve(globalThis.CryptoJS);
       script.onerror = () => reject(new Error("Failed to load CryptoJS"));
+      document.head.appendChild(script);
+    }));
+})();
+
+// Lazy-load the qrcode-generator library from CDN once — same pattern as
+// loadCryptoJS, since encoding QR's Reed-Solomon error correction isn't
+// something to hand-roll here.
+const loadQRCodeLib = (() => {
+  let promise;
+  return () =>
+    (promise ??= new Promise((resolve, reject) => {
+      if (globalThis.qrcode) return resolve(globalThis.qrcode);
+      const script = document.createElement("script");
+      script.src =
+        "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";
+      script.onload = () => resolve(globalThis.qrcode);
+      script.onerror = () => reject(new Error("Failed to load QR code library"));
       document.head.appendChild(script);
     }));
 })();
@@ -299,6 +307,20 @@ export const crypto = {
       result += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
     }
     return result;
+  },
+
+  // Returns a boolean module matrix; ui.js turns it into pixels/canvas.
+  async generateQRMatrix(text, errorCorrectionLevel = "M") {
+    if (!text) throw new Error("Enter text to encode");
+    const qrcodeLib = await loadQRCodeLib();
+    const qr = qrcodeLib(0, errorCorrectionLevel); // typeNumber 0 = auto-size
+    qr.addData(text);
+    qr.make();
+    const size = qr.getModuleCount();
+    const matrix = Array.from({ length: size }, (_, row) =>
+      Array.from({ length: size }, (_, col) => qr.isDark(row, col)),
+    );
+    return { size, matrix };
   },
 };
 
